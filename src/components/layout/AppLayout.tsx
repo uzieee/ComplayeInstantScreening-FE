@@ -4,14 +4,15 @@ import { Sidebar } from './Sidebar'
 import { Header } from './Header'
 
 const PAGE_TITLES: Record<string, string> = {
-  '/dashboard': 'Dashboard',
-  '/screening': 'Instant Screening',
-  '/reports': 'Reports',
-  '/audit': 'Audit Log',
-  '/analytics': 'Analytics',
-  '/settings': 'Settings',
-  '/admin/users': 'User Management',
-  '/admin/tenants': 'Tenant Management',
+  '/dashboard':         'Dashboard',
+  '/screening':         'Instant Screening',
+  '/screening/history': 'Screening History',
+  '/reports':           'Reports',
+  '/audit':             'Audit Log',
+  '/analytics':         'Analytics',
+  '/settings':          'Settings',
+  '/admin/users':       'User Management',
+  '/admin/tenants':     'Tenant Management',
 }
 
 export function AppLayout() {
