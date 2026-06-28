@@ -55,7 +55,7 @@ export default function AuditLogPage() {
         {/* Table header */}
         <div className="grid grid-cols-[32px_1fr_120px_80px_100px_140px] gap-3 px-5 py-3 bg-gray-50 border-b border-gray-100 text-xs font-semibold text-gray-500 uppercase tracking-wider">
           <span/>
-          <span>Entity / Action</span>
+          <span>Entity</span>
           <span>Action</span>
           <span>Result</span>
           <span>User</span>

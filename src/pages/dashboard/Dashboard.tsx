@@ -15,29 +15,6 @@ import { Button } from '@/components/ui/Button'
 import { cn } from '@/utils/cn'
 import type { DashboardStats } from '@/types'
 
-// ---------- Mock data (used when API is not yet available) ----------
-const MOCK: DashboardStats = {
-  total_searches_today: 142,
-  total_searches_month: 3847,
-  hits_today: 7,
-  pending_reviews: 12,
-  quota_used: 3847,
-  quota_total: 10000,
-  recent_activity: [
-    { id: '1', action: 'Screening', entity: 'MAERSK LINE LTD', result: 'clear', user: 'J. Kimani', timestamp: new Date().toISOString() },
-    { id: '2', action: 'Screening', entity: 'VOSTOK SHIPPING CO', result: 'hit', user: 'A. Diallo', timestamp: new Date(Date.now() - 300000).toISOString() },
-    { id: '3', action: 'Screening', entity: 'GOLDEN STAR TRADING', result: 'possible_match', user: 'J. Kimani', timestamp: new Date(Date.now() - 900000).toISOString() },
-    { id: '4', action: 'Batch Upload', entity: '48 entities', result: 'clear', user: 'M. Osei', timestamp: new Date(Date.now() - 1800000).toISOString() },
-    { id: '5', action: 'Screening', entity: 'IBRAHIM AL-HASSAN', result: 'hit', user: 'A. Diallo', timestamp: new Date(Date.now() - 3600000).toISOString() },
-  ],
-  search_trend: Array.from({ length: 14 }, (_, i) => ({
-    date: new Date(Date.now() - (13 - i) * 86400000).toISOString().split('T')[0],
-    searches: Math.floor(100 + Math.random() * 200),
-    hits: Math.floor(2 + Math.random() * 15),
-  })),
-  risk_breakdown: { clear: 3712, hits: 48, possible_matches: 63, pending: 24 },
-}
-
 const RISK_COLORS = {
   clear: '#22c55e',
   hits: '#ef4444',
@@ -58,17 +35,16 @@ export default function DashboardPage() {
   const { data: stats, isLoading } = useQuery<DashboardStats>({
     queryKey: ['dashboard-stats'],
     queryFn: async () => {
-      try {
-        const res = await dashboardApi.getStats()
-        return res.data
-      } catch {
-        return MOCK
-      }
+      const res = await dashboardApi.getStats()
+      return res.data
     },
-    initialData: MOCK,
+    staleTime: 0,
+    refetchOnMount: 'always',
   })
 
-  const quotaPct = Math.round((stats.quota_used / stats.quota_total) * 100)
+  if (isLoading || !stats) return <div className="flex justify-center pt-20"><Spinner size={32} /></div>
+
+  const quotaPct = stats.quota_total > 0 ? Math.round((stats.quota_used / stats.quota_total) * 100) : 0
 
   const pieData = [
     { name: 'Clear', value: stats.risk_breakdown.clear, color: RISK_COLORS.clear },
@@ -76,8 +52,6 @@ export default function DashboardPage() {
     { name: 'Possible', value: stats.risk_breakdown.possible_matches, color: RISK_COLORS.possible_matches },
     { name: 'Pending', value: stats.risk_breakdown.pending, color: RISK_COLORS.pending },
   ]
-
-  if (isLoading) return <div className="flex justify-center pt-20"><Spinner size={32} /></div>
 
   return (
     <div className="space-y-6">
@@ -179,14 +153,20 @@ export default function DashboardPage() {
           <h3 className="font-semibold text-gray-900 text-sm mb-1">Risk breakdown</h3>
           <p className="text-xs text-gray-400 mb-4">This month</p>
           <div className="flex justify-center">
-            <PieChart width={160} height={160}>
-              <Pie data={pieData} cx={75} cy={75} innerRadius={50} outerRadius={75} paddingAngle={3} dataKey="value">
-                {pieData.map((entry, i) => (
-                  <Cell key={i} fill={entry.color} />
-                ))}
-              </Pie>
-              <Tooltip contentStyle={{ borderRadius: 8, border: '1px solid #e5e7eb', fontSize: 12 }} />
-            </PieChart>
+            {pieData.every((d) => d.value === 0) ? (
+              <div className="w-40 h-40 rounded-full border-[14px] border-gray-100 flex items-center justify-center">
+                <span className="text-xs text-gray-300">No data yet</span>
+              </div>
+            ) : (
+              <PieChart width={160} height={160}>
+                <Pie data={pieData} cx={75} cy={75} innerRadius={50} outerRadius={75} paddingAngle={3} dataKey="value">
+                  {pieData.map((entry, i) => (
+                    <Cell key={i} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip contentStyle={{ borderRadius: 8, border: '1px solid #e5e7eb', fontSize: 12 }} />
+              </PieChart>
+            )}
           </div>
           <ul className="space-y-2 mt-2">
             {pieData.map((d) => (
@@ -210,6 +190,13 @@ export default function DashboardPage() {
             <h3 className="font-semibold text-gray-900 text-sm">Recent activity</h3>
             <button className="text-xs text-brand hover:text-brand-dark font-medium">View all</button>
           </div>
+          {stats.recent_activity.length === 0 && (
+            <div className="flex flex-col items-center justify-center py-12 text-center">
+              <Search size={24} className="text-gray-300 mb-2" />
+              <p className="text-sm text-gray-400">No screenings yet</p>
+              <p className="text-xs text-gray-300 mt-0.5">Run your first screening to see activity here</p>
+            </div>
+          )}
           <div className="divide-y divide-gray-50">
             {stats.recent_activity.map((item) => {
               const cfg = RESULT_CONFIG[item.result]
