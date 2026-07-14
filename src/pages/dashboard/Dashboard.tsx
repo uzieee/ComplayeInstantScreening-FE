@@ -122,8 +122,9 @@ export default function DashboardPage() {
               </span>
             </div>
           </div>
+          <div style={{ width: '100%', height: 200 }}>
           <ResponsiveContainer width="100%" height={200}>
-            <AreaChart data={stats.search_trend} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
+            <AreaChart data={stats.search_trend ?? []} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
               <defs>
                 <linearGradient id="colorSearches" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#E85D26" stopOpacity={0.15} />
@@ -146,6 +147,7 @@ export default function DashboardPage() {
               <Area type="monotone" dataKey="hits" stroke="#ef4444" strokeWidth={2} fill="none" dot={false} strokeDasharray="4 2" />
             </AreaChart>
           </ResponsiveContainer>
+          </div>
         </div>
 
         {/* Risk breakdown */}
@@ -158,6 +160,7 @@ export default function DashboardPage() {
                 <span className="text-xs text-gray-300">No data yet</span>
               </div>
             ) : (
+              <div style={{ width: 160, height: 160 }}>
               <PieChart width={160} height={160}>
                 <Pie data={pieData} cx={75} cy={75} innerRadius={50} outerRadius={75} paddingAngle={3} dataKey="value">
                   {pieData.map((entry, i) => (
@@ -166,6 +169,7 @@ export default function DashboardPage() {
                 </Pie>
                 <Tooltip contentStyle={{ borderRadius: 8, border: '1px solid #e5e7eb', fontSize: 12 }} />
               </PieChart>
+              </div>
             )}
           </div>
           <ul className="space-y-2 mt-2">
