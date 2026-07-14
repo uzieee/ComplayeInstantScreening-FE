@@ -16,6 +16,7 @@ const ScreeningPage        = lazy(() => import('@/pages/screening/Screening'))
 const ScreeningHistoryPage = lazy(() => import('@/pages/screening/ScreeningHistory'))
 const AuditLogPage         = lazy(() => import('@/pages/audit/AuditLog'))
 const SettingsPage         = lazy(() => import('@/pages/settings/Settings'))
+const AnalyticsPage        = lazy(() => import('@/pages/analytics/Analytics'))
 
 function App() {
   return (
@@ -39,7 +40,7 @@ function App() {
 
               {/* Placeholders for next phase */}
               <Route path="/reports"            element={<ComingSoon title="Reports" desc="Generate and download compliance reports for your screening sessions." />} />
-              <Route path="/analytics"          element={<ComingSoon title="Analytics" desc="Advanced analytics and trend reports coming in the next release." />} />
+              <Route path="/analytics"          element={<AnalyticsPage />} />
               <Route path="/admin/users"        element={<ComingSoon title="User Management" desc="Invite team members and manage roles." />} />
               <Route path="/admin/tenants"      element={<ComingSoon title="Tenant Management" desc="Manage client organisations (super admin only)." />} />
             </Route>
