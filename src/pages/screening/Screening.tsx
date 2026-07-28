@@ -16,7 +16,7 @@ const schema = z.object({
 })
 type FormData = z.infer<typeof schema>
 
-const SOURCES = ['OFAC', 'EU', 'UN', 'UK']
+const SOURCES = ['OFAC', 'EU', 'UN', 'UK', 'CANADA', 'AUSTRALIA', 'SECO', 'BIS']
 
 const RESULT_CFG = {
   hit:           { label: 'Hit',            color: 'text-red-600',    bg: 'bg-red-50',    border: 'border-red-200',    icon: AlertTriangle },
