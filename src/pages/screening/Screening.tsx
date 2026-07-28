@@ -265,6 +265,20 @@ function ScreeningResults({ result, onDownload }: { result: any; onDownload: (id
         </div>
       </div>
 
+      {/* AI Risk Narrative */}
+      {result.ai_narrative && (
+        <div className="bg-white rounded-2xl border border-blue-100 shadow-card p-5">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-7 h-7 rounded-lg bg-blue-50 flex items-center justify-center">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-600"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 6v6l4 2"/><circle cx="18" cy="6" r="3"/><path d="M16.5 4.5 21 9"/></svg>
+            </div>
+            <span className="text-sm font-semibold text-gray-900">AI Risk Assessment</span>
+            <span className="text-xs text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full font-medium">Powered by Claude</span>
+          </div>
+          <p className="text-sm text-gray-700 leading-relaxed">{result.ai_narrative}</p>
+        </div>
+      )}
+
       {/* Matches */}
       {result.results?.length > 0 ? (
         <div className="bg-white rounded-2xl border border-gray-100 shadow-card overflow-hidden">
