@@ -63,21 +63,21 @@ export default function AnalyticsPage() {
   const maxCountry = top_countries[0]?.count || 1
 
   return (
-    <div className="space-y-6 max-w-6xl">
+    <div className="space-y-4 md:space-y-6 max-w-6xl">
 
       {/* Header */}
-      <div className="flex items-center justify-between flex-wrap gap-3">
+      <div className="flex items-center justify-between gap-3 flex-wrap">
         <div>
-          <h2 className="text-xl font-bold text-gray-900">Analytics</h2>
-          <p className="text-sm text-gray-500 mt-0.5">Screening performance and risk intelligence</p>
+          <h2 className="text-lg md:text-xl font-bold text-gray-900">Analytics</h2>
+          <p className="text-xs md:text-sm text-gray-500 mt-0.5">Screening performance and risk intelligence</p>
         </div>
-        <div className="flex items-center gap-1 bg-gray-100 rounded-xl p-1">
+        <div className="flex items-center gap-0.5 bg-gray-100 rounded-xl p-1">
           {PERIODS.map(p => (
             <button
               key={p.value}
               onClick={() => setPeriod(p.value)}
               className={cn(
-                'px-3 py-1.5 rounded-lg text-xs font-medium transition-all',
+                'px-2 md:px-3 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap',
                 period === p.value
                   ? 'bg-white text-gray-900 shadow-sm'
                   : 'text-gray-500 hover:text-gray-700'
@@ -90,7 +90,7 @@ export default function AnalyticsPage() {
       </div>
 
       {/* KPI cards */}
-      <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
         <KpiCard
           label="Total screenings"
           value={summary.total_screens.toLocaleString()}
@@ -122,7 +122,7 @@ export default function AnalyticsPage() {
       </div>
 
       {/* Trend chart */}
-      <div className="card p-5">
+      <div className="card p-4 md:p-5">
         <div className="flex items-center justify-between mb-4">
           <div>
             <h3 className="font-semibold text-gray-900 text-sm">Screening trend</h3>
@@ -172,7 +172,7 @@ export default function AnalyticsPage() {
       </div>
 
       {/* Middle row */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-4">
 
         {/* Result breakdown donut */}
         <div className="card p-5">
@@ -310,15 +310,15 @@ function KpiCard({ label, value, icon: Icon, color, sub }: {
     purple: 'bg-purple-50 text-purple-600',
   }
   return (
-    <div className="card p-5">
-      <div className="flex items-center justify-between mb-3">
-        <span className={cn('w-9 h-9 rounded-xl flex items-center justify-center', colorMap[color])}>
-          <Icon size={18} />
+    <div className="card p-4 md:p-5">
+      <div className="flex items-center justify-between mb-2 md:mb-3">
+        <span className={cn('w-8 h-8 md:w-9 md:h-9 rounded-xl flex items-center justify-center', colorMap[color])}>
+          <Icon size={16} />
         </span>
       </div>
-      <p className="text-2xl font-bold text-gray-900">{value}</p>
-      <p className="text-xs font-medium text-gray-700 mt-0.5">{label}</p>
-      <p className="text-xs text-gray-400 mt-0.5">{sub}</p>
+      <p className="text-xl md:text-2xl font-bold text-gray-900">{value}</p>
+      <p className="text-xs font-medium text-gray-700 mt-0.5 leading-tight">{label}</p>
+      <p className="text-xs text-gray-400 mt-0.5 leading-tight">{sub}</p>
     </div>
   )
 }

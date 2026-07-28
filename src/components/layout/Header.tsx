@@ -1,4 +1,4 @@
-import { Bell, Search, PanelLeftClose, PanelLeft, HelpCircle, AlertTriangle, CheckCircle, ShieldAlert, X } from 'lucide-react'
+import { Bell, Search, PanelLeftClose, PanelLeft, HelpCircle, AlertTriangle, CheckCircle, ShieldAlert, X, Menu } from 'lucide-react'
 import { useState, useRef, useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useAuthStore } from '@/store/authStore'
@@ -9,10 +9,11 @@ import { format, parseISO } from 'date-fns'
 interface HeaderProps {
   sidebarCollapsed: boolean
   onToggleSidebar: () => void
+  onMobileMenuToggle: () => void
   pageTitle?: string
 }
 
-export function Header({ sidebarCollapsed, onToggleSidebar, pageTitle }: HeaderProps) {
+export function Header({ sidebarCollapsed, onToggleSidebar, onMobileMenuToggle, pageTitle }: HeaderProps) {
   const { user } = useAuthStore()
   const [notifOpen, setNotifOpen] = useState(false)
   const panelRef = useRef<HTMLDivElement>(null)
@@ -40,20 +41,28 @@ export function Header({ sidebarCollapsed, onToggleSidebar, pageTitle }: HeaderP
   }, [notifOpen])
 
   return (
-    <header className="h-16 bg-white border-b border-gray-100 flex items-center px-4 gap-4 shrink-0">
+    <header className="h-14 md:h-16 bg-white border-b border-gray-100 flex items-center px-3 md:px-4 gap-2 md:gap-4 shrink-0">
+      {/* Mobile hamburger */}
+      <button
+        onClick={onMobileMenuToggle}
+        className="md:hidden text-gray-400 hover:text-gray-600 transition-colors p-2 rounded-md hover:bg-gray-100"
+      >
+        <Menu size={20} />
+      </button>
+      {/* Desktop sidebar toggle */}
       <button
         onClick={onToggleSidebar}
-        className="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-md hover:bg-gray-100"
+        className="hidden md:flex text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-md hover:bg-gray-100"
       >
         {sidebarCollapsed ? <PanelLeft size={20} /> : <PanelLeftClose size={20} />}
       </button>
 
       {pageTitle && (
-        <h1 className="text-base font-semibold text-gray-900 hidden sm:block">{pageTitle}</h1>
+        <h1 className="text-sm md:text-base font-semibold text-gray-900">{pageTitle}</h1>
       )}
 
       {/* Global search */}
-      <div className="flex-1 max-w-md hidden md:block">
+      <div className="flex-1 max-w-md hidden lg:block">
         <div className="relative">
           <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <input
@@ -86,7 +95,7 @@ export function Header({ sidebarCollapsed, onToggleSidebar, pageTitle }: HeaderP
 
         {/* Notification panel */}
         {notifOpen && (
-          <div className="absolute top-12 right-0 z-50 w-80 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+          <div className="absolute top-12 right-0 z-50 w-[calc(100vw-2rem)] max-w-sm bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
             <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
               <h3 className="text-sm font-semibold text-gray-900">Screening alerts</h3>
               <button onClick={() => setNotifOpen(false)} className="text-gray-400 hover:text-gray-600">
@@ -140,7 +149,7 @@ export function Header({ sidebarCollapsed, onToggleSidebar, pageTitle }: HeaderP
         )}
 
         {/* Avatar */}
-        <div className="ml-1 flex items-center gap-2.5 pl-3 border-l border-gray-100">
+        <div className="ml-1 flex items-center gap-2 md:gap-2.5 pl-2 md:pl-3 border-l border-gray-100">
           <div className="w-8 h-8 rounded-full bg-brand/10 flex items-center justify-center">
             <span className="text-sm font-bold text-brand">
               {user?.full_name?.[0]?.toUpperCase() ?? 'U'}

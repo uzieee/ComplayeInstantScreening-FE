@@ -14,10 +14,10 @@ const ACTION_CFG: Record<string, { icon: React.ElementType; color: string; bg: s
   user_created:     { icon: Users,        color: 'text-indigo-600', bg: 'bg-indigo-50' },
 }
 
-const RESULT_CFG: Record<string, { label: string; color: string }> = {
-  hit:           { label: 'Hit',     color: 'text-red-600' },
-  possible_match:{ label: 'Possible',color: 'text-amber-600' },
-  clear:         { label: 'Clear',   color: 'text-green-600' },
+const RESULT_CFG: Record<string, { label: string; color: string; bg: string }> = {
+  hit:           { label: 'Hit',      color: 'text-red-700',    bg: 'bg-red-50' },
+  possible_match:{ label: 'Possible', color: 'text-amber-700',  bg: 'bg-amber-50' },
+  clear:         { label: 'Clear',    color: 'text-green-700',  bg: 'bg-green-50' },
 }
 
 export default function AuditLogPage() {
@@ -35,11 +35,11 @@ export default function AuditLogPage() {
   const totalPages = data ? Math.ceil(data.total / data.per_page) : 1
 
   return (
-    <div className="max-w-5xl space-y-5">
+    <div className="max-w-5xl space-y-4 md:space-y-5">
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h2 className="text-xl font-bold text-gray-900">Audit Log</h2>
-          <p className="text-sm text-gray-500 mt-0.5">Immutable record of all actions performed by your organisation</p>
+          <h2 className="text-lg md:text-xl font-bold text-gray-900">Audit Log</h2>
+          <p className="text-xs md:text-sm text-gray-500 mt-0.5">Immutable record of all actions performed by your organisation</p>
         </div>
         <select value={filterAction} onChange={e => { setFilterAction(e.target.value); setPage(1) }}
           className="text-sm border border-gray-200 rounded-xl px-3 py-2 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#F75835]/20 focus:border-[#F75835]">
@@ -52,8 +52,8 @@ export default function AuditLogPage() {
       </div>
 
       <div className="bg-white rounded-2xl border border-gray-100 shadow-card overflow-hidden">
-        {/* Table header */}
-        <div className="grid grid-cols-[32px_1fr_120px_80px_100px_140px] gap-3 px-5 py-3 bg-gray-50 border-b border-gray-100 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+        {/* Desktop table header — hidden on mobile */}
+        <div className="hidden md:grid grid-cols-[32px_1fr_120px_80px_100px_140px] gap-3 px-5 py-3 bg-gray-50 border-b border-gray-100 text-xs font-semibold text-gray-500 uppercase tracking-wider">
           <span/>
           <span>Entity</span>
           <span>Action</span>
@@ -78,19 +78,48 @@ export default function AuditLogPage() {
             const Icon = acfg.icon
             const rcfg = RESULT_CFG[log.result] || null
             return (
-              <div key={log.id} className="grid grid-cols-[32px_1fr_120px_80px_100px_140px] gap-3 px-5 py-3.5 items-center hover:bg-gray-50/60 transition-colors">
-                <span className={cn('w-7 h-7 rounded-lg flex items-center justify-center', acfg.bg)}>
-                  <Icon size={13} className={acfg.color} />
-                </span>
-                <span className="font-medium text-sm text-gray-900 truncate">{log.entity}</span>
-                <span className="text-xs text-gray-500 capitalize">{log.action.replace(/_/g, ' ')}</span>
-                <span className={cn('text-xs font-semibold', rcfg?.color || 'text-gray-400')}>
-                  {rcfg?.label || '—'}
-                </span>
-                <span className="text-xs text-gray-500 truncate">{log.user}</span>
-                <span className="text-xs text-gray-400">
-                  {log.timestamp ? format(parseISO(log.timestamp), 'd MMM HH:mm:ss') : '—'}
-                </span>
+              <div key={log.id}>
+                {/* Desktop row */}
+                <div className="hidden md:grid grid-cols-[32px_1fr_120px_80px_100px_140px] gap-3 px-5 py-3.5 items-center hover:bg-gray-50/60 transition-colors">
+                  <span className={cn('w-7 h-7 rounded-lg flex items-center justify-center', acfg.bg)}>
+                    <Icon size={13} className={acfg.color} />
+                  </span>
+                  <span className="font-medium text-sm text-gray-900 truncate">{log.entity}</span>
+                  <span className="text-xs text-gray-500 capitalize">{log.action.replace(/_/g, ' ')}</span>
+                  <span className={cn('text-xs font-semibold', rcfg?.color || 'text-gray-400')}>
+                    {rcfg?.label || '—'}
+                  </span>
+                  <span className="text-xs text-gray-500 truncate">{log.user}</span>
+                  <span className="text-xs text-gray-400">
+                    {log.timestamp ? format(parseISO(log.timestamp), 'd MMM HH:mm') : '—'}
+                  </span>
+                </div>
+
+                {/* Mobile card */}
+                <div className="md:hidden flex items-start gap-3 px-4 py-3 hover:bg-gray-50/60 transition-colors">
+                  <span className={cn('w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5', acfg.bg)}>
+                    <Icon size={14} className={acfg.color} />
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 justify-between">
+                      <p className="font-medium text-sm text-gray-900 truncate">{log.entity || '—'}</p>
+                      {rcfg && (
+                        <span className={cn('text-xs font-semibold px-2 py-0.5 rounded-full shrink-0', rcfg.color, rcfg.bg)}>
+                          {rcfg.label}
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2 mt-0.5 flex-wrap">
+                      <span className="text-xs text-gray-400 capitalize">{log.action.replace(/_/g, ' ')}</span>
+                      <span className="text-gray-200">·</span>
+                      <span className="text-xs text-gray-400">{log.user}</span>
+                      <span className="text-gray-200">·</span>
+                      <span className="text-xs text-gray-400">
+                        {log.timestamp ? format(parseISO(log.timestamp), 'd MMM HH:mm') : '—'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
             )
           })}
@@ -98,14 +127,12 @@ export default function AuditLogPage() {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex items-center justify-between px-5 py-3 border-t border-gray-100">
-            <p className="text-xs text-gray-500">
-              {data?.total} total records
-            </p>
+          <div className="flex items-center justify-between px-4 md:px-5 py-3 border-t border-gray-100">
+            <p className="text-xs text-gray-500">{data?.total} records</p>
             <div className="flex items-center gap-2">
               <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}
                 className="text-xs px-3 py-1.5 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-40 transition-colors">
-                Previous
+                Prev
               </button>
               <span className="text-xs text-gray-500">{page} / {totalPages}</span>
               <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages}

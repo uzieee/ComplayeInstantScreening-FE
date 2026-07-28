@@ -56,22 +56,22 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       {/* Welcome */}
-      <div className="flex items-start justify-between flex-wrap gap-4">
+      <div className="flex items-center justify-between gap-3">
         <div>
-          <h2 className="text-xl font-bold text-gray-900">
+          <h2 className="text-lg md:text-xl font-bold text-gray-900">
             Good {greeting()}, {user?.full_name?.split(' ')[0]} 👋
           </h2>
-          <p className="text-sm text-gray-500 mt-0.5">
-            {user?.tenant_name} · {format(new Date(), 'EEEE, d MMMM yyyy')}
+          <p className="text-xs md:text-sm text-gray-500 mt-0.5">
+            {user?.tenant_name} · {format(new Date(), 'd MMM yyyy')}
           </p>
         </div>
-        <Button size="md" className="gap-2">
-          <Search size={16} /> New Screening
+        <Button size="md" className="gap-2 shrink-0">
+          <Search size={16} /> <span className="hidden sm:inline">New </span>Screening
         </Button>
       </div>
 
       {/* Stat cards */}
-      <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
         <StatCard
           label="Searches today"
           value={stats.total_searches_today}
@@ -105,7 +105,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Charts row */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-3 md:gap-4">
         {/* Trend chart */}
         <div className="card p-5 xl:col-span-2">
           <div className="flex items-center justify-between mb-4">
@@ -187,7 +187,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Bottom row */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-3 md:gap-4">
         {/* Recent activity */}
         <div className="card xl:col-span-2">
           <div className="flex items-center justify-between px-5 py-4 border-b border-gray-50">
@@ -297,10 +297,10 @@ function StatCard({
     amber: 'bg-amber-50 text-amber-600',
   }
   return (
-    <div className="card p-5">
-      <div className="flex items-center justify-between mb-3">
-        <span className={cn('w-9 h-9 rounded-xl flex items-center justify-center', colorMap[color])}>
-          <Icon size={18} />
+    <div className="card p-4 md:p-5">
+      <div className="flex items-center justify-between mb-2 md:mb-3">
+        <span className={cn('w-8 h-8 md:w-9 md:h-9 rounded-xl flex items-center justify-center', colorMap[color])}>
+          <Icon size={16} />
         </span>
         {change && (
           <span className={cn('flex items-center gap-0.5 text-xs font-medium', positive ? 'text-green-600' : 'text-red-500')}>
@@ -309,8 +309,8 @@ function StatCard({
           </span>
         )}
       </div>
-      <p className="text-2xl font-bold text-gray-900">{value}</p>
-      <p className="text-xs text-gray-500 mt-0.5">{label}</p>
+      <p className="text-xl md:text-2xl font-bold text-gray-900">{value}</p>
+      <p className="text-xs text-gray-500 mt-0.5 leading-tight">{label}</p>
     </div>
   )
 }

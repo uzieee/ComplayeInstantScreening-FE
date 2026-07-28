@@ -69,15 +69,15 @@ export default function ScreeningPage() {
     setSources(prev => prev.includes(s) ? prev.filter(x => x !== s) : [...prev, s])
 
   return (
-    <div className="max-w-5xl space-y-6">
+    <div className="max-w-5xl space-y-4 md:space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-3">
         <div>
-          <h2 className="text-xl font-bold text-gray-900">Instant Screening</h2>
-          <p className="text-sm text-gray-500 mt-0.5">Screen entities against global sanctions lists in real-time</p>
+          <h2 className="text-lg md:text-xl font-bold text-gray-900">Instant Screening</h2>
+          <p className="text-xs md:text-sm text-gray-500 mt-0.5">Screen entities against global sanctions lists in real-time</p>
         </div>
-        <Link to="/screening/history" className="flex items-center gap-2 text-sm font-medium text-[#203864] hover:text-[#F75835] transition-colors">
-          <History size={16} /> View history
+        <Link to="/screening/history" className="flex items-center gap-1.5 text-xs md:text-sm font-medium text-[#203864] hover:text-[#F75835] transition-colors shrink-0">
+          <History size={15} /> History
         </Link>
       </div>
 
@@ -85,7 +85,7 @@ export default function ScreeningPage() {
       <div className="flex gap-1 bg-gray-100 p-1 rounded-xl w-fit">
         {(['single', 'batch'] as const).map(t => (
           <button key={t} onClick={() => setTab(t)}
-            className={cn('px-5 py-2 rounded-lg text-sm font-medium transition-all',
+            className={cn('px-4 md:px-5 py-2 rounded-lg text-sm font-medium transition-all',
               tab === t ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700')}>
             {t === 'single' ? 'Single Entity' : 'Batch Upload'}
           </button>
@@ -93,7 +93,7 @@ export default function ScreeningPage() {
       </div>
 
       {tab === 'single' ? (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
           {/* Form */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-2xl border border-gray-100 shadow-card p-6">

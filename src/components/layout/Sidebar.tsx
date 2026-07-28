@@ -23,9 +23,10 @@ const adminItems = [
 
 interface SidebarProps {
   collapsed?: boolean
+  onClose?: () => void
 }
 
-export function Sidebar({ collapsed = false }: SidebarProps) {
+export function Sidebar({ collapsed = false, onClose }: SidebarProps) {
   const { user, logout } = useAuthStore()
   const navigate = useNavigate()
   const isSuperAdmin = user?.role === 'super_admin'
