@@ -10,6 +10,10 @@ const RegisterPage       = lazy(() => import('@/pages/auth/Register'))
 const TwoFactorPage      = lazy(() => import('@/pages/auth/TwoFactor'))
 const ForgotPasswordPage = lazy(() => import('@/pages/auth/ForgotPassword'))
 
+// Admin
+const AdminUsersPage   = lazy(() => import('@/pages/admin/AdminUsers'))
+const AdminTenantsPage = lazy(() => import('@/pages/admin/AdminTenants'))
+
 // App
 const DashboardPage        = lazy(() => import('@/pages/dashboard/Dashboard'))
 const ScreeningPage        = lazy(() => import('@/pages/screening/Screening'))
@@ -41,8 +45,8 @@ function App() {
               {/* Placeholders for next phase */}
               <Route path="/reports"            element={<ComingSoon title="Reports" desc="Generate and download compliance reports for your screening sessions." />} />
               <Route path="/analytics"          element={<AnalyticsPage />} />
-              <Route path="/admin/users"        element={<ComingSoon title="User Management" desc="Invite team members and manage roles." />} />
-              <Route path="/admin/tenants"      element={<ComingSoon title="Tenant Management" desc="Manage client organisations (super admin only)." />} />
+              <Route path="/admin/users"        element={<AdminUsersPage />} />
+              <Route path="/admin/tenants"      element={<AdminTenantsPage />} />
             </Route>
           </Route>
 

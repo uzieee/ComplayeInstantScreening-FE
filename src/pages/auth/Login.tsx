@@ -49,7 +49,7 @@ export default function LoginPage() {
       toast.success(`Welcome back, ${meRes.data.full_name}!`)
       navigate('/dashboard')
     } catch (err) {
-      toast.error(extractError(err))
+      toast.error(extractError(err), { duration: 6000 })
     }
   }
 

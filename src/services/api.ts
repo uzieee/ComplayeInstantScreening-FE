@@ -80,6 +80,17 @@ export const usersApi = {
   update: (id: string, data: object) => api.patch(`/users/${id}`, data),
 }
 
+// ── Admin (super_admin only)
+export const adminApi = {
+  listTenants:   ()                          => api.get('/admin/tenants'),
+  createTenant:  (data: object)              => api.post('/admin/tenants', data),
+  updateTenant:  (id: string, data: object)  => api.patch(`/admin/tenants/${id}`, data),
+  listUsers:     ()                          => api.get('/admin/users'),
+  createUser:    (data: object)              => api.post('/admin/users', data),
+  updateUser:    (id: string, data: object)  => api.patch(`/admin/users/${id}`, data),
+  deleteUser:    (id: string)                => api.delete(`/admin/users/${id}`),
+}
+
 export const extractError = (err: unknown): string => {
   const e = err as AxiosError<{ detail: string | { msg: string }[] }>
   const d = e?.response?.data?.detail
