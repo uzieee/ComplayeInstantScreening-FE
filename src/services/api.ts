@@ -63,7 +63,14 @@ export const screeningApi = {
 
 // ── Audit
 export const auditApi = {
-  list: (page = 1, action?: string) => api.get('/audit', { params: { page, per_page: 50, action } }),
+  list:             (page = 1, action?: string) => api.get('/audit', { params: { page, per_page: 50, action } }),
+  connectionReport: ()                          => api.get('/audit/connection-report'),
+}
+
+// ── Reports
+export const reportsApi = {
+  emailReport: (sessionId: string, recipient: string) =>
+    api.post(`/screening/${sessionId}/report/email`, { recipient }),
 }
 
 // ── Collector
