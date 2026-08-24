@@ -32,6 +32,7 @@ export const authApi = {
   confirm2FA:     (code: string, pending_secret: string) => api.post(`/auth/2fa/confirm?pending_secret=${pending_secret}`, { code }),
   disable2FA:     (code: string) => api.post('/auth/2fa/disable', { code }),
   forgotPassword: (email: string) => api.post('/auth/forgot-password', { email }),
+  resetPassword: (token: string, password: string) => api.post('/auth/reset-password', { token, password }),
   me:             () => api.get('/auth/me'),
 }
 

@@ -8,7 +8,8 @@ import { AppLayout } from '@/components/layout/AppLayout'
 const LoginPage          = lazy(() => import('@/pages/auth/Login'))
 const RegisterPage       = lazy(() => import('@/pages/auth/Register'))
 const TwoFactorPage      = lazy(() => import('@/pages/auth/TwoFactor'))
-const ForgotPasswordPage = lazy(() => import('@/pages/auth/ForgotPassword'))
+const ForgotPasswordPage  = lazy(() => import('@/pages/auth/ForgotPassword'))
+const ResetPasswordPage   = lazy(() => import('@/pages/auth/ResetPassword'))
 
 // Admin
 const AdminUsersPage   = lazy(() => import('@/pages/admin/AdminUsers'))
@@ -33,6 +34,7 @@ function App() {
           <Route path="/register"         element={<RegisterPage />} />
           <Route path="/2fa"              element={<TwoFactorPage />} />
           <Route path="/forgot-password"  element={<ForgotPasswordPage />} />
+          <Route path="/reset-password"   element={<ResetPasswordPage />} />
 
           {/* Protected app */}
           <Route element={<ProtectedRoute />}>
